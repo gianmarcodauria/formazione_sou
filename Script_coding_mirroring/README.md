@@ -1,0 +1,1 @@
+In questa cartella affronteremo alcuni script bash, analizzando linea per linea il comportamento del codice e le peculiarità di questo linguaggio.

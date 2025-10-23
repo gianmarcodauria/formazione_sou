@@ -3,12 +3,9 @@
 echo "Is the kernel updated?"
 
 my_kernel=$(uname -r)
-latest_kernel_version=$(apt-cache policy linux-image-generic | grep Candidate | awk '{print $2}')
+are_there_updates=$(apt-get -s upgrade 2>/dev/null | grep '^Inst' | grep 'linux-image')
 
-my_kernel=$(echo "$my_kernel" | cut -d'-' -f1)
-latest_kernel_version=$(echo "$my_kernel" | cut -d'-' -f1)
-
-if [ "$my_kernel" = "$latest_kernel_version" ]; then
+if [ -z "$are_there_updates" ]; then
     echo "true"
 else
     echo "false"

@@ -1,14 +1,14 @@
 PER DEBIAN:
 
-- Faccio  echo che stamperà a schermo, dando inizio allo script, chiedendo se il kernel è aggiornato
-- In my_kernel_version salvo la mia versione del kernel, che ottengo dall'esecuzione del comando uname r
-- Lo stesso accade per la variabile successiva, latest_kernel_version, che salva il risultato del comando apt-cache policy linux-image-generic, il quale mi fornisce come risultato una serie di stringhe dalle quali andrò a selezionare Candidate, a cui segue il numero della versione dell'aggiornamento. Awk stampa il secondo campo
-- In seguito, formatto e aggiorno le mie due variabili salvando in esse solo il numero della versione (con cut -d passo il delimitatore '-' e seleziono solo il campo prima del delimitatore, quindi i numeri, ed è utile per la lettura). Lo faccio per entrambe le variabili.
-- Per ultimo, confronto le stringhe e capisco se il kernel è aggiornato oppure no.
+- apt-get -s upgrade simula un aggiornamento dei pacchetti senza installare nulla (-s sta per simulate).
 
+- 2>/dev/null reindirizza eventuali errori a /dev/null, quindi non li vediamo (con &1 reindirezzeremmo invece in standard input * vedi MACOS sotto).
+- grep '^Inst' prende solo le righe che indicano pacchetti che verrebbero installati/aggiornati.
+- grep 'linux-image' filtra i pacchetti legati al kernel.
+- L’output viene salvato nella variabile are_there_updates. -z è un controllo che verifica che la variabile non sia vuota.
 --------------------------------------------------------
 
-PER MACOS
+PER MACOS:
 
 * in questa circostanza, il ragionamento che ho applicato è il medesimo ma la differenza risiede nel fatto che in macOS l'aggiornamento del kernel è legato a quello del sistema operativo. In linux, invece, è possibile aggiornare il kernel indipendentemente dall'OS 
 

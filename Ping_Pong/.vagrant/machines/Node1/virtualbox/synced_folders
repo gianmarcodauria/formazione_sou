@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/data":{"guestpath":"/home/vagrant/data","hostpath":"/Users/gianmarco.dauria/Desktop/Ping_Pong/data","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/gianmarco.dauria/Desktop/Ping_Pong","disabled":false,"__vagrantfile":true}}}

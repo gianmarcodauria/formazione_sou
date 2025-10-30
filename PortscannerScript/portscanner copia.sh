@@ -11,7 +11,6 @@ range="$2"
 start="${range%%-*}"
 end="${range#*-}"
 
-door=()
 i=0
 
 if (( start < 1 || start > 65535 || end < 1 || end > 65535 || start > end )); then

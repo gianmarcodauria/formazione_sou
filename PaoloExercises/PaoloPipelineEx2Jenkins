@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    stages {
+        stage('build and warning') {
+            steps {
+                script {
+                    def day = new Date()
+                    def day_right_format = day.format('u') as int
+                    for (int i in 1..7) {
+                        if (day_right_format == i) {
+                            if (i <= 5) {
+                                echo "IS BUILDING"
+                                sh """
+                                    echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin
+                                    docker build -t ${DOCKERHUB_CREDENTIALS_USR}/flask-app-example:${IMAGE_TAG} .
+                                    docker push ${DOCKERHUB_CREDENTIALS_USR}/flask-app-example:${IMAGE_TAG}
+                                """
+                            } else {
+                                echo "WARNING: DAY IS SATURDAY OR SUNDAY - NO BUILD"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

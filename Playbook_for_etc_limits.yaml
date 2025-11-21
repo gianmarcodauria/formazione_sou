@@ -1,0 +1,26 @@
+---
+- name: gestione limiti utenti
+  hosts: all
+  become: yes
+  vars:
+    environment: development
+    limits_settings:
+      - domain: '*'
+        type: soft
+        item: nofile
+        value: "{% if environment == 'devlopment' %}10000{% else %}1000{% endif %}"
+      - domain: '*'
+        type: hard
+        item: nofile
+        value: "{% if environment == 'development' %}10000{% else %}1000{% endif %}"
+  tasks:
+    - name: Append settings a /etc/security/limits.conf
+      ansible.builtin.blockinfile:
+        path: /etc/security/limits.conf
+        block: |
+          {% for limit in limits_settings %}
+          {{ limit.domain }} {{ limit.type }} {{ limit.item }} {{ limit.value }}
+          {% endfor %}
+        insertafter: EOF
+        create: yes
+

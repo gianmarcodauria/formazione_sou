@@ -1,0 +1,20 @@
+---
+- name: aggiungere utenti in whitelist
+  hosts: all
+  become: yes
+  vars:
+    whitelist_users:
+      - lorenzo
+      - marco
+      - antonio
+  tasks:
+    - name: Inserimento utenti in whitelist
+      ansible.builtin.blockinfile:
+        path: /etc/security/access.conf
+        block: |
+          {% for user in whitelist_users %}
+          + : {{ user }} : ALL
+          {% endfor %}
+        insertbefore: '^- : ALL : ALL'
+        create: yes
+

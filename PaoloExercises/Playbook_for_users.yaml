@@ -1,0 +1,24 @@
+---
+- name: creazione utenti
+  hosts: all
+  become: yes
+  vars:
+    users:
+      - name: lorenzo
+        shell: /bin/bash
+        home: /home/lorenzo
+        groups: sudo
+      - name: marco
+        shell: /bin/zsh
+        home: /home/marco
+        groups: users
+  tasks:
+    - name: creazione utenti lista di dizionari
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        shell: "{{ item.shell }}"
+        home: "{{ item.home }}"
+        groups: "{{ item.groups }}"
+        state: present
+      loop: "{{ users }}"
+

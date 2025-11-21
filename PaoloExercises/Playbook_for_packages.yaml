@@ -1,0 +1,16 @@
+---
+- name: gestione pacchetti
+  hosts: all
+  become: yes
+  vars:
+    packages:
+      vim: present
+      curl: present
+      nano: absent
+  tasks:
+    - name: gestione pacchetti dictionary
+      ansible.builtin.package:
+        name: "{{ item.key }}"
+        state: "{{ item.value }}"
+      loop: "{{ packages | dict2items }}"
+

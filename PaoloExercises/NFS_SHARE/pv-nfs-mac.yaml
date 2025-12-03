@@ -1,0 +1,19 @@
+# pv-nfs-mac.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-mac-pv
+spec:
+  capacity:
+    storage: 5Gi                   
+  accessModes:
+    - ReadWriteMany               
+  persistentVolumeReclaimPolicy: Retain
+  # *** AZIONE RISOLUTIVA: Aggiunta delle opzioni di mount ***
+  mountOptions:
+    - "vers=3"
+    - "nolock"
+    - "noatime"
+  nfs:
+    server: "192.168.3.128"          
+    path: "/Users/gianmarco.dauria/nfs_share"

@@ -1,0 +1,17 @@
+# pod-nfs-pvc.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-nfs-claim-test
+spec:
+  containers:
+  - name: my-pvc-container
+    image: busybox:latest
+    command: ["sh", "-c", "echo 'NFS Mounted via PVC!' && sleep 3600"]
+    volumeMounts:
+    - name: nfs-storage
+      mountPath: "/mnt/shared-pvc"
+  volumes:
+  - name: nfs-storage
+    persistentVolumeClaim:
+      claimName: nfs-mac-pvc

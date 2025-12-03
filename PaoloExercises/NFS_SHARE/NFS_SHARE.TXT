@@ -1,0 +1,30 @@
+ESERCIZIO NFS SHARE
+
+Per risolvere l'esercizio ho seguito questo procedimento:
+
+- Ho prima di tutto creato la cartella nfs_share 
+
+- In /etc/exports ho configurato la nfs_share 
+	/Users/gianmarco.dauria/nfs_share -mapall=501:20 *
+  Mappando così tutti gli utenti remoti all'UID locale.
+
+- Dopodiché nel file pv-nfs-mac.yaml sono andato a definire il PV e le operazioni risolutive di mount.
+
+- In pvc-nfs-mac.yaml inserisco la richiesta di storage. Questa richiesta si legherà automaticamente al persistent volume definito in precedenza, se i requisiti accessModes e storage corrispondono.
+
+- Nel file pod-nfs-pvc.yaml definisco il pod e la connessione direttamente nel volume.
+
+--------------------------------------
+Il problema iniziale era la compatibilità del protocollo nfs tra il client minikube e il server: il pod rimaneva in status ContainerCreating.
+Ho risolto inserendo delle mountOptions in pv-nfs-mac.yaml, dove ho specificato che volevo utilizzare la versione 3 di nfs, in particolare "nolock", che ha risolto i problemi di stallo del mount legati al blocco file.
+
+Ho infine applicato il persistent volume, il rispettivo claim e infine creato il pod che utilizza il pvc, con questi comandi:
+
+kubectl apply -f pv-nfs-mac.yaml
+
+kubectl apply -f pvc-nfs-mac.yaml 
+kubectl apply -f pod-nfs-pvc.yaml
+
+E infine ho controllato che il pod fosse stato effettivamente creato e che fosse in status Running.
+
+

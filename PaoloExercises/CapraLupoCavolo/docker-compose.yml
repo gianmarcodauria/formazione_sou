@@ -1,0 +1,24 @@
+services:
+  sponda_a:
+    build: .
+    container_name: sponda_a
+    environment:
+      - SPONDA_ID=A
+  
+  sponda_b:
+    build: .
+    container_name: sponda_b
+    environment:
+      - SPONDA_ID=B
+
+  gioco:
+    build: .
+    container_name: gioco
+    volumes:
+      - .:/app
+    command: python -u controller.py
+    stdin_open: true
+    tty: true
+    depends_on:
+      - sponda_a
+      - sponda_b

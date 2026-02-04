@@ -1,0 +1,17 @@
+apiVersion: v1alpha1
+static:
+  - name: apprunner_requests
+    namespace: AWS/AppRunner
+    regions:
+      - eu-west-1
+    metrics:
+      - name: Requests
+        statistics: [Sum]
+        period: 60
+        length: 600
+        # Aggiungendo questo, YACE proverà a recuperare i dati aggregati per servizio
+        dimensions:
+          - name: ServiceName
+            value: IL_TUO_NOME_SERVIZIO # Sostituisci con il nome reale su AWS
+          - name: ServiceId
+            value: IL_TUO_SERVICE_ID   # Sostituisci con l'ID reale (es. abc123def...)

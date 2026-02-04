@@ -1,0 +1,40 @@
+services:
+  cloudwatch-exporter:
+    image: ghcr.io/nerdswords/yet-another-cloudwatch-exporter:v0.60.0
+    container_name: cloudwatch-exporter
+    volumes:
+      - ./config.yml:/tmp/config.yml
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    # Forziamo l'ascolto sulla porta corretta e su tutte le interfacce
+    command:
+      - --config.file=/tmp/config.yml
+      - --listen-address=:9106
+    ports:
+      - "9106:9106"
+    networks:
+      - monitoring
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
